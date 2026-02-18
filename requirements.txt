@@ -1,0 +1,7 @@
+# Requirements
+playwright 
+pandas 
+duckdb 
+streamlit 
+openai
+google-generativeai

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Data Insights - Hybrid Premium UI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <!-- Scripts -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            color: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .spinning {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ticker-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ticker-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [data, setData] = useState([]);
+            const [insights, setInsights] = useState(null);
+            const [loading, setLoading] = useState(true);
+
+            const fetchData = async () => {
+                setLoading(true);
+                try {
+                    const [dataRes, insightRes] = await Promise.all([
+                        fetch('http://localhost:8000/data'),
+                        fetch('http://localhost:8000/insights')
+                    ]);
+                    const dataJson = await dataRes.json();
+                    const insightJson = await insightRes.json();
+                    setData(dataJson);
+                    setInsights(insightJson);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            useEffect(() => {
+                fetchData();
+                // Initialize Lucide icons
+                setTimeout(() => lucide.createIcons(), 500);
+            }, []);
+
+            return (
+                <div className="flex flex-col min-h-screen">
+                    <header className="sticky top-0 z-50 glass border-b border-white/10 px-8 py-4 flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                            <i data-lucide="brain-circuit" className="text-indigo-500 w-8 h-8"></i>
+                            <h1 className="text-xl font-extrabold outfit">AI Data <span className="text-indigo-500">Insight</span></h1>
+                        </div>
+                        <button
+                            onClick={fetchData}
+                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 transition-all px-4 py-2 rounded-lg font-semibold shadow-lg shadow-indigo-500/30"
+                        >
+                            <i data-lucide="refresh-cw" className={`${loading ? 'spinning' : ''} w-5 h-5`}></i>
+                            Refresh
+                        </button>
+                    </header>
+
+                    <main className="container mx-auto max-w-6xl px-8 py-12">
+                        {insights && (
+                            <section className="mb-12 animate-in fade-in duration-700">
+                                <div className="flex items-center gap-2 mb-6 text-indigo-400">
+                                    <i data-lucide="brain-circuit" className="w-6 h-6"></i>
+                                    <h2 className="text-xl font-bold outfit">AI Strategic Intelligence</h2>
+                                </div>
+
+                                {(() => {
+                                    const lines = insights.content.split('\n');
+                                    const direction = lines.find(l => l.includes('MARKET DIRECTION'))?.replace(/.*MARKET DIRECTION[:* ]*/i, '') || '';
+                                    const sentiment = lines.find(l => l.includes('Sentiment:'))?.split(':').pop()?.trim() || 'Neutral';
+                                    const risk = lines.find(l => l.includes('Risk Level:'))?.split(':').pop()?.trim() || 'Low';
+                                    const takeaways = lines.filter(l => l.trim().startsWith('-')).map(l => l.replace(/^- /, ''));
+
+                                    return (
+                                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                            {/* Hero Direction Card */}
+                                            <div className="lg:col-span-2 glass p-8 rounded-2xl border-l-4 border-indigo-500 relative overflow-hidden">
+                                                <div className="relative z-10">
+                                                    <span className="text-indigo-400 text-xs font-bold uppercase tracking-wider mb-2 block">Executive Summary</span>
+                                                    <h3 className="text-2xl font-semibold leading-tight outfit">{direction}</h3>
+                                                </div>
+                                                <i data-lucide="trending-up" className="absolute -bottom-4 -right-4 w-32 h-32 opacity-5 text-indigo-500"></i>
+                                            </div>
+
+                                            {/* Sentiment & Risk Badges */}
+                                            <div className="glass p-8 rounded-2xl flex flex-col justify-center gap-6">
+                                                <div>
+                                                    <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2 block">Market Sentiment</span>
+                                                    <div className={`text-xl font-bold outfit ${sentiment.toLowerCase() === 'bullish' ? 'text-emerald-400' : sentiment.toLowerCase() === 'bearish' ? 'text-red-400' : 'text-amber-400'}`}>
+                                                        {sentiment}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2 block">Portfolio Risk</span>
+                                                    <div className={`text-xl font-bold outfit ${risk.toLowerCase() === 'high' ? 'text-red-400' : risk.toLowerCase() === 'medium' ? 'text-amber-400' : 'text-emerald-400'}`}>
+                                                        {risk}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Strategic Takeaways */}
+                                            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+                                                {takeaways.slice(0, 3).map((note, idx) => (
+                                                    <div key={idx} className="glass p-6 rounded-xl flex gap-4 items-start border-t border-white/5 hover:border-white/20 transition-all">
+                                                        <div className="bg-indigo-500/10 p-2 rounded-lg text-indigo-400 shrink-0">
+                                                            <i data-lucide="check-circle-2" className="w-5 h-5"></i>
+                                                        </div>
+                                                        <p className="text-sm text-slate-300 leading-relaxed font-medium">{note}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+                            </section>
+                        )}
+
+                        <section>
+                            <div className="flex items-center gap-2 mb-6 text-emerald-400">
+                                <i data-lucide="trending-up" className="w-6 h-6"></i>
+                                <h2 className="text-xl font-bold outfit">Trending Tickers</h2>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {data.map((item) => {
+                                    const change = parseFloat(item.Change);
+                                    const isPositive = !isNaN(change) && change >= 0;
+
+                                    return (
+                                        <div key={item.Symbol} className="glass p-6 rounded-2xl ticker-card">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <span className="text-lg font-bold outfit">{item.Symbol}</span>
+                                                <span className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold ${isPositive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+                                                    <i data-lucide={isPositive ? "trending-up" : "trending-down"} className="w-3 h-3"></i>
+                                                    {item.Change}%
+                                                </span>
+                                            </div>
+                                            <div className="text-slate-400 text-sm mb-1">{item.Name}</div>
+                                            <div className="text-3xl font-bold outfit mb-2">${item.Price}</div>
+                                            <div className="text-xs text-slate-500 mb-4">Vol: {item.Volume.toLocaleString()}</div>
+                                            <div className="text-slate-400 text-sm line-clamp-3 leading-snug">
+                                                {item.Description}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </section>
+                    </main>
+
+                    <footer className="mt-auto py-8 border-t border-white/10 text-center text-slate-500 text-sm">
+                        <div className="flex items-center justify-center gap-2">
+                            <i data-lucide="layers" className="w-4 h-4"></i>
+                            <span>AI Data Insight Pipeline v2.0 - Standalone UI</span>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>

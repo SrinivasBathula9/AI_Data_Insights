@@ -1,0 +1,255 @@
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-icon {
+    color: var(--primary);
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.4));
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.logo h1 span {
+    color: var(--primary);
+}
+
+.refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.refresh-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.accent-icon {
+    color: var(--accent);
+}
+
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Insight Hero */
+.insight-hero {
+    margin-bottom: 3rem;
+}
+
+.insight-body {
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.insight-content p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Ticker Grid */
+.ticker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.ticker-card {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.ticker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.symbol {
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.change.positive {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.change.negative {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+.ticker-name {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.ticker-price {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-family: 'Outfit', sans-serif;
+}
+
+.ticker-volume {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.ticker-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+/* Animations */
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.ticker-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.ticker-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.ticker-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.ticker-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.footer {
+    margin-top: auto;
+    padding: 2rem;
+    border-top: 1px solid var(--glass-border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
