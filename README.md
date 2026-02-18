@@ -102,5 +102,11 @@ graph TD
 - **Competitive Analysis**: Scrape and compare data across different financial entities.
 - **Historical Analysis**: Review archived insights stored in the local database.
 
+## 📈 Execution Results
+
+Below is a snapshot of the AI Data Insight platform in action, showcasing the real-time AI Strategic Intelligence and market trends:
+
+![Platform Outcome](outcome.png)
+
 ---
 *Built with ❤️ using Agentic AI workflows.*
