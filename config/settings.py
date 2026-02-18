@@ -13,7 +13,7 @@ PAGE_TIMEOUT = 60000  # 60 seconds
 
 # Gemini Configuration
 GEMINI_MODEL = "gemini-3-flash-preview"
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyAiBTZXXn6M4F_eCqdeTJwhR0BcA1NpoMI")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "xxxxxx")
 
 # Logging Configuration
 LOG_LEVEL = "INFO"
